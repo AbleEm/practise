@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree</title>
+</head>
+<body>
+    <form id = "variantForm">
+        <div id="color" style="display:flex; gap: 30px;">
+            <div>
+                <input type="radio" id="red" name="color" value="red" checked>
+                <label for="red">red</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="white" name="color" value="white">
+                <label for="white">white</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="black" name="color" value="black">
+                <label for="black">black</label>
+            </div>
+        </div>
+        <div id="length" style="display:flex; gap: 30px;">
+            <div>
+                <input type="radio" id="1m" name="length" value="1m" checked>
+                <label for="1m">1m</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="3m" name="length" value="3m">
+                <label for="3m">3m</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="6m" name="length" value="6m">
+                <label for="6m">6m</label>
+            </div>
+        </div>
+        <div id="finish" style="display:flex; gap: 30px;">
+            <div>
+                <input type="radio" id="nylon" name="finish" value="nylon" checked>
+                <label for="nylon">nylon</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="rubber" name="finish" value="rubber">
+                <label for="rubber">rubber</label>
+            </div>
+
+        </div>
+    </form>
+    <p id="result"></p>
+    <p id="combiList"></p>
+    <script src="./index.js"></script>
+</body>
+</html>
