@@ -1,77 +1,77 @@
 let variants = [
-    {
-      name: 'color: black | length: 1 meter',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: '1 meter' }
-     ]     
-    },
-    {
-      name: 'color: black | length: 1.8 meters',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: black | length: mfi to type c',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    },
-    {
-      name: 'color: silver | length: 1 meter',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: '1 meter' }
-     ]
-    },
-    {
-      name: 'color: silver | length: 1.8 meters',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: silver | length: mfi to type c',
-      stock: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    },
-    {
-      name: 'color: gold | length: 1 meter',
-      stock: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: '1 meter' }
-     ]
-    },
-    {
-      name: 'color: gold | length: 1.8 meters',
-      stock: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: gold | length: mfi to type c',
-      stock: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    }
-  ]
+  {
+    name: 'color: black | length: 1 meter',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'black' },
+      { kind: 'length', value: '1 meter' }
+    ]
+  },
+  {
+    name: 'color: black | length: 1.8 meters',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'black' },
+      { kind: 'length', value: '1.8 meters' }
+    ]
+  },
+  {
+    name: 'color: black | length: mfi to type c',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'black' },
+      { kind: 'length', value: 'mfi to type c' }
+    ]
+  },
+  {
+    name: 'color: silver | length: 1 meter',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'silver' },
+      { kind: 'length', value: '1 meter' }
+    ]
+  },
+  {
+    name: 'color: silver | length: 1.8 meters',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'silver' },
+      { kind: 'length', value: '1.8 meters' }
+    ]
+  },
+  {
+    name: 'color: silver | length: mfi to type c',
+    stock: 'inactive',
+    attribute_values: [
+      { kind: 'color', value: 'silver' },
+      { kind: 'length', value: 'mfi to type c' }
+    ]
+  },
+  {
+    name: 'color: gold | length: 1 meter',
+    stock: 'inactive',
+    attribute_values: [
+      { kind: 'color', value: 'gold' },
+      { kind: 'length', value: '1 meter' }
+    ]
+  },
+  {
+    name: 'color: gold | length: 1.8 meters',
+    stock: 'active',
+    attribute_values: [
+      { kind: 'color', value: 'gold' },
+      { kind: 'length', value: '1.8 meters' }
+    ]
+  },
+  {
+    name: 'color: gold | length: mfi to type c',
+    stock: 'inactive',
+    attribute_values: [
+      { kind: 'color', value: 'gold' },
+      { kind: 'length', value: 'mfi to type c' }
+    ]
+  }
+]
 
 const sampleInput = {
   "kind": "Lightning Cable",
@@ -173,25 +173,25 @@ let { kind, attributes } = sampleInput2
 
 for (i = attributes.length - 1; i >= 0; i--) {
   if (i == attributes.length - 1) {
-    attributes[i].properties.forEach(value => nodes.push(new Node(attributes[i].kind,value)))
+    attributes[i].properties.forEach(value => nodes.push(new Node(attributes[i].kind, value)))
   } else {
     attributes[i].properties.forEach(value => {
-      helper.push(new Node(attributes[i].kind,value, nodes))
+      helper.push(new Node(attributes[i].kind, value, nodes))
     })
     nodes = helper
     helper = []
   }
 }
 
-const tree = new Node('root', 'root',nodes)
+const tree = new Node('root', 'root', nodes)
 
 const looper = (node, value) => {
   if (node.children.length > 0) {
     node.children.forEach((item) => {
-      looper(item, value + ", " +item.value)
+      looper(item, value + ", " + item.value)
     })
   } else {
-    combinations.push(value)
+    combinations.push(value.split(", "))
   }
 }
 
