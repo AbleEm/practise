@@ -7,7 +7,7 @@
     <title>Tree</title>
 </head>
 <body>
-    <form id = "variantForm">
+    <!-- <form id = "variantForm">
         <div id="color" style="display:flex; gap: 30px;">
             <div>
                 <input type="radio" id="red" name="color" value="red" checked>
@@ -52,9 +52,44 @@
             </div>
 
         </div>
+    </form> -->
+    <form id = "variantForm">
+        <div id="color" style="display:flex; gap: 30px;">
+            <div>
+                <input type="radio" id="black" name="color" value="black" checked>
+                <label for="black">black</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="silver" name="color" value="silver">
+                <label for="silver">silver</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="gold" name="color" value="gold">
+                <label for="gold">gold</label>
+            </div>
+        </div>
+        <div id="length" style="display:flex; gap: 30px;">
+            <div>
+                <input type="radio" id="1 meter" name="length" value="1 meter" checked>
+                <label for="1 meter">1 meter</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="1.8 meters" name="length" value="1.8 meters">
+                <label for="1.8 meters">1.8 meters</label>
+            </div>
+            
+            <div>
+                <input type="radio" id="mfi to type c" name="length" value="mfi to type c">
+                <label for="mfi to type c">mfi to type c</label>
+            </div>
+        </div>
     </form>
     <p id="result"></p>
     <p id="combiList"></p>
+    <p id="stockStatus"></p>
     <script src="./index.js"></script>
 </body>
 </html>

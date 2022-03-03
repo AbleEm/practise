@@ -1,3 +1,78 @@
+let variants = [
+    {
+      name: 'color: black | length: 1 meter',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'black' },
+       { kind: 'length', value: '1 meter' }
+     ]     
+    },
+    {
+      name: 'color: black | length: 1.8 meters',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'black' },
+       { kind: 'length', value: '1.8 meters' }
+     ]
+    },
+    {
+      name: 'color: black | length: mfi to type c',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'black' },
+       { kind: 'length', value: 'mfi to type c' }
+     ]
+    },
+    {
+      name: 'color: silver | length: 1 meter',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'silver' },
+       { kind: 'length', value: '1 meter' }
+     ]
+    },
+    {
+      name: 'color: silver | length: 1.8 meters',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'silver' },
+       { kind: 'length', value: '1.8 meters' }
+     ]
+    },
+    {
+      name: 'color: silver | length: mfi to type c',
+      stock: 'inactive',
+      attribute_values: [
+       { kind: 'color', value: 'silver' },
+       { kind: 'length', value: 'mfi to type c' }
+     ]
+    },
+    {
+      name: 'color: gold | length: 1 meter',
+      stock: 'inactive',
+      attribute_values: [
+       { kind: 'color', value: 'gold' },
+       { kind: 'length', value: '1 meter' }
+     ]
+    },
+    {
+      name: 'color: gold | length: 1.8 meters',
+      stock: 'active',
+      attribute_values: [
+       { kind: 'color', value: 'gold' },
+       { kind: 'length', value: '1.8 meters' }
+     ]
+    },
+    {
+      name: 'color: gold | length: mfi to type c',
+      stock: 'inactive',
+      attribute_values: [
+       { kind: 'color', value: 'gold' },
+       { kind: 'length', value: 'mfi to type c' }
+     ]
+    }
+  ]
+
 const sampleInput = {
   "kind": "Lightning Cable",
   "attributes": [
@@ -83,7 +158,8 @@ const assessmentInput = {
 }
 
 class Node {
-  constructor(value, child) {
+  constructor(kind, value, child) {
+    this.kind = kind
     this.value = value
     this.children = child || []
   }
@@ -93,26 +169,26 @@ let nodes = []
 let helper = []
 let combinations = []
 
-let { kind, attributes } = sampleInput
+let { kind, attributes } = sampleInput2
 
 for (i = attributes.length - 1; i >= 0; i--) {
   if (i == attributes.length - 1) {
-    attributes[i].properties.forEach(value => nodes.push(new Node(value)))
+    attributes[i].properties.forEach(value => nodes.push(new Node(attributes[i].kind,value)))
   } else {
     attributes[i].properties.forEach(value => {
-      helper.push(new Node(value, nodes))
+      helper.push(new Node(attributes[i].kind,value, nodes))
     })
     nodes = helper
     helper = []
   }
 }
 
-const tree = new Node('root', nodes)
+const tree = new Node('root', 'root',nodes)
 
 const looper = (node, value) => {
   if (node.children.length > 0) {
     node.children.forEach((item) => {
-      looper(item, value + " | " + item.value)
+      looper(item, value + ", " +item.value)
     })
   } else {
     combinations.push(value)
@@ -121,83 +197,9 @@ const looper = (node, value) => {
 
 tree.children.forEach(node => {
   if (node.children.length > 0) {
+    //   console.log({kind : node.kind, value: node.value});
     looper(node, node.value)
   }
 })
 
 console.log(combinations);
-
-let variants = [
-    {
-      name: 'color: black | length: 1 meter',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: '1 meter' }
-     ]     
-    },
-    {
-      name: 'color: black | length: 1.8 meters',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: black | length: mfi to type c',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'black' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    },
-    {
-      name: 'color: silver | length: 1 meter',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: '1 meter' }
-     ]
-    },
-    {
-      name: 'color: silver | length: 1.8 meters',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: silver | length: mfi to type c',
-      status: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'silver' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    },
-    {
-      name: 'color: gold | length: 1 meter',
-      status: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: '1 meter' }
-     ]
-    },
-    {
-      name: 'color: gold | length: 1.8 meters',
-      status: 'active',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: '1.8 meters' }
-     ]
-    },
-    {
-      name: 'color: gold | length: mfi to type c',
-      status: 'inactive',
-      attribute_values: [
-       { kind: 'color', value: 'gold' },
-       { kind: 'length', value: 'mfi to type c' }
-     ]
-    }
-  ]
