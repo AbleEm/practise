@@ -185,21 +185,43 @@ for (i = attributes.length - 1; i >= 0; i--) {
 
 const tree = new Node('root', 'root', nodes)
 
-const looper = (node, value) => {
-  if (node.children.length > 0) {
-    node.children.forEach((item) => {
-      looper(item, value + ", " + item.value)
-    })
-  } else {
-    combinations.push(value.split(", "))
+const looper = (node, obj) => {
+  let foo = obj
+  if (node.children.length>0){
+        node.children.forEach((item) => {
+          looper(item, [...foo,{kind: item.kind, value: item.value}])
+        })
+      } else {
+    combinations.push(foo)
   }
 }
 
-tree.children.forEach(node => {
-  if (node.children.length > 0) {
-    //   console.log({kind : node.kind, value: node.value});
-    looper(node, node.value)
+tree.children.forEach((node)=>{
+  if (node.children.length>0){
+    looper(node,[{kind: node.kind, value: node.value}])
   }
 })
 
-console.log(combinations);
+// const looper = (node, value) => {
+//   if (node.children.length > 0) {
+//     node.children.forEach((item) => {
+//       looper(item, value + ", " + item.value)
+//     })
+//   } else {
+//     combinations.push(value.split(", "))
+//   }
+// }
+
+// tree.children.forEach(node => {
+//   if (node.children.length > 0) {
+//     //   console.log({kind : node.kind, value: node.value});
+//     looper(node, node.value)
+//   }
+// })
+
+// console.log(combinations);
+
+let emNode = tree.children.find((item)=>item.value === "silver")
+console.log("emNode",emNode);
+
+emNode.children.forEach(item=> console.log(item.value))
