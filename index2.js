@@ -334,6 +334,44 @@ const treeForm = document.getElementById("variantForm")
 
 let possibleCombinations = combiGenerator(tree)
 
+let modifiedCombinations = possibleCombinations.map(combination => combination.map(item => item.value))
+
+let modifiedVariants = []
+variants2.map(combination =>{
+  if(combination.stock === "active") {
+    let value = combination.attribute_values.map(item => item.value)
+    modifiedVariants.push(value);
+  }
+}
+)
+// console.log("MODI",modifiedVariants);
+
+// console.log(variants2.length);
+
+let validCombiSearchFn = (inputArray,searchKey) => {
+  let available = []
+  if (searchKey.length === 1){
+    inputArray.map((input)=> {
+      if(input.find(item => item === searchKey[0])){
+        available.push(input)
+      }
+    })
+  } else {
+    inputArray.map((input)=> {
+      if(JSON.stringify(input)===JSON.stringify(searchKey)){
+        available.push(input)
+      }
+    })
+  }
+  
+  return available
+}
+let test = validCombiSearchFn(modifiedVariants,[ '3m'])
+console.log(test.length);
+console.log("SEARCH",test);
+// let test2 = validCombiSearchFn(modifiedCombinations,'nylon')
+// console.log(test2.length);
+
 treeForm.addEventListener('change', () => {
   let inputs = treeForm.querySelectorAll('input')
 
@@ -372,46 +410,46 @@ treeForm.addEventListener('change', () => {
 //   console.log("modifiedInputs",modifiedInputs);
 
 // console.log("selectedInputs",selectedInputs[0].value);
-  let test = findNode(selectedInputs[0].value,tree)
+  // let test = findNode(selectedInputs[0].value,tree)
 
-  const selectedVariantValue = test.value
-  console.log("Found Node",test);
+  // const selectedVariantValue = test.value
+  // console.log("Found Node",test);
 
-  const nodeValid = (item, selectedVariantValue)=>{
-      let validChildren = []
-      item.children.forEach(it=>{
-          const combination =  selectedVariantValue + item.value + it.value
-          const variant = variants2.find(it=>{
-              const attributePath = it.attribute_values.map(attribute=>attribute.value).join('')
-              if(attributePath === combination){
-                  return true
-              }
-          })
-          if(variant.stock === 'active'){
-              validChildren.push(it)
-          }
-      })
-      if(validChildren.length === 0){
-          return []
-      }
-      else{
-          return validChildren
-      }
-  }
+  // const nodeValid = (item, selectedVariantValue)=>{
+  //     let validChildren = []
+  //     item.children.forEach(it=>{
+  //         const combination =  selectedVariantValue + item.value + it.value
+  //         const variant = variants2.find(it=>{
+  //             const attributePath = it.attribute_values.map(attribute=>attribute.value).join('')
+  //             if(attributePath === combination){
+  //                 return true
+  //             }
+  //         })
+  //         if(variant.stock === 'active'){
+  //             validChildren.push(it)
+  //         }
+  //     })
+  //     if(validChildren.length === 0){
+  //         return []
+  //     }
+  //     else{
+  //         return validChildren
+  //     }
+  // }
 
-  test.children.forEach(item=>{
-      if(item.children.length){
-        const validChildren = nodeValid(item, selectedVariantValue)
-        if(validChildren.length > 0){
-            console.log("===node is valid",item.value  ,validChildren)
-        }else{
-            console.log("======disabl node",item.value)
-        }
-      }
-      else{
+  // test.children.forEach(item=>{
+  //     if(item.children.length){
+  //       const validChildren = nodeValid(item, selectedVariantValue)
+  //       if(validChildren.length > 0){
+  //           console.log("===node is valid",item.value  ,validChildren)
+  //       }else{
+  //           console.log("======disabl node",item.value)
+  //       }
+  //     }
+  //     else{
 
-      }
-  })
+  //     }
+  // })
   
 //   if (variantList.length>0){
 //       variantList.map(variant=>{
