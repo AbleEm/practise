@@ -4,7 +4,7 @@ const treeForm = document.getElementById("variantForm")
 const result = document.getElementById("result")
 
 let modifiedVariants = []
-sampleInput.variants.map(combination =>{
+sampleInput.variants2.map(combination =>{
   if(combination.stock === "active") {
     let value = combination.attribute_values.map(item => item.value)
     modifiedVariants.push(value);
