@@ -1,4 +1,4 @@
-  const options= {
+export const options= {
     "kind": "Lightning Cable",
     "attributes": [
       {
@@ -12,7 +12,7 @@
     ]
   }
 
-  const options2 = {
+export const options2 = {
     "kind": "Lightning Cable",
     "attributes": [
       {
@@ -30,7 +30,7 @@
     ]
   }
 
-  const variants = [
+export const variants = [
     {
       name: 'color: black | length: 1 meter',
       stock: 'active',
@@ -105,7 +105,7 @@
     }
   ]
 
-  const variants2 = [
+export const variants2 = [
     {
       name: 'color: red | length: 1m | finish: nylon',
       stock: 'active',
@@ -117,7 +117,7 @@
     },
     {
       name: 'color: red | length: 1m | finish: rubber',
-      stock: 'active',
+      stock: 'inactive',
       attribute_values: [
         { kind: 'color', value: 'red' },
         { kind: 'length', value: '1m' },
@@ -270,201 +270,3 @@
     },
     
   ]
-
-  class Node {
-    constructor(kind, value, child) {
-      this.kind = kind
-      this.value = value
-      this.children = child || []
-    }
-  }
-  
-  let nodes = []
-  let helper = []
-  
-  let { kind, attributes } = options2
-  
-  for (i = attributes.length - 1; i >= 0; i--) {
-    if (i == attributes.length - 1) {
-      attributes[i].properties.forEach(value => nodes.push(new Node(attributes[i].kind, value)))
-    } else {
-      attributes[i].properties.forEach(value => {
-        helper.push(new Node(attributes[i].kind, value, nodes))
-      })
-      nodes = helper
-      helper = []
-    }
-  }
-  
-  const tree = new Node('root', 'root', nodes)
-
-  const combiGenerator =(inputNode)=>{
-    let combinations = []
-    const looper = (node, obj) => {
-        let foo = obj
-        if (node.children.length>0){
-              node.children.forEach((item) => {
-                looper(item, [...foo,{kind: item.kind, value: item.value}])
-              })
-            } else {
-          combinations.push(foo)
-        }
-      }
-      
-      inputNode.children.forEach((node)=>{
-        if (node.children.length>0){
-          looper(node,[{kind: node.kind, value: node.value}])
-        }
-      })
-
-      return combinations
-  }
-/*
-  @function findNode
-    Return - Node with kind, value, children
-  @params:
-    fetchNode - input value from form whose children need to be fetched
-    inputNode - parent of fetchNode
-*/
-  let findNode = (fetchNode,inputNode)=>{
-    return inputNode.children.find(item=>fetchNode === item.value)
-  }
-
-const treeForm = document.getElementById("variantForm")
-
-let possibleCombinations = combiGenerator(tree)
-
-let modifiedCombinations = possibleCombinations.map(combination => combination.map(item => item.value))
-
-let modifiedVariants = []
-variants2.map(combination =>{
-  if(combination.stock === "active") {
-    let value = combination.attribute_values.map(item => item.value)
-    modifiedVariants.push(value);
-  }
-}
-)
-// console.log("MODI",modifiedVariants);
-
-// console.log(variants2.length);
-
-let validCombiSearchFn = (inputArray,searchKey) => {
-  let available = []
-  if (searchKey.length === 1){
-    inputArray.map((input)=> {
-      if(input.find(item => item === searchKey[0])){
-        available.push(input)
-      }
-    })
-  } else {
-    inputArray.map((input)=> {
-      if(JSON.stringify(input)===JSON.stringify(searchKey)){
-        available.push(input)
-      }
-    })
-  }
-  
-  return available
-}
-let test = validCombiSearchFn(modifiedVariants,[ '3m'])
-console.log(test.length);
-console.log("SEARCH",test);
-// let test2 = validCombiSearchFn(modifiedCombinations,'nylon')
-// console.log(test2.length);
-
-treeForm.addEventListener('change', () => {
-  let inputs = treeForm.querySelectorAll('input')
-
-  inputs = [...inputs]
-
-  let selectedInputs = []
-  inputs.map((input) => {
-    if (input.checked == true) {
-      selectedInputs.push(input)
-    }
-  })
-
-  inputs.map((input)=>{
-    if(input.hasAttribute("disabled")){
-        input.removeAttribute("disabled")
-    }
-})
-
-  let list = possibleCombinations.filter((item) => {
-    return item[0].value===selectedInputs[0].value
-  })
-  let variantList = []
-  if (list) {
-    list.map((listItem) => {
-      variants2.find(item => {
-        const attributeValues = item.attribute_values.map(it => it)
-        if (JSON.stringify(attributeValues) === JSON.stringify(listItem)) {
-          variantList.push(item)
-        }
-      })
-    })
-  }
-
-//   console.log("variantList",variantList);
-//   console.log("selectedInputs",selectedInputs);
-//   console.log("modifiedInputs",modifiedInputs);
-
-// console.log("selectedInputs",selectedInputs[0].value);
-  // let test = findNode(selectedInputs[0].value,tree)
-
-  // const selectedVariantValue = test.value
-  // console.log("Found Node",test);
-
-  // const nodeValid = (item, selectedVariantValue)=>{
-  //     let validChildren = []
-  //     item.children.forEach(it=>{
-  //         const combination =  selectedVariantValue + item.value + it.value
-  //         const variant = variants2.find(it=>{
-  //             const attributePath = it.attribute_values.map(attribute=>attribute.value).join('')
-  //             if(attributePath === combination){
-  //                 return true
-  //             }
-  //         })
-  //         if(variant.stock === 'active'){
-  //             validChildren.push(it)
-  //         }
-  //     })
-  //     if(validChildren.length === 0){
-  //         return []
-  //     }
-  //     else{
-  //         return validChildren
-  //     }
-  // }
-
-  // test.children.forEach(item=>{
-  //     if(item.children.length){
-  //       const validChildren = nodeValid(item, selectedVariantValue)
-  //       if(validChildren.length > 0){
-  //           console.log("===node is valid",item.value  ,validChildren)
-  //       }else{
-  //           console.log("======disabl node",item.value)
-  //       }
-  //     }
-  //     else{
-
-  //     }
-  // })
-  
-//   if (variantList.length>0){
-//       variantList.map(variant=>{
-//           if (variant.stock === "inactive"){
-//                 console.log("Inactive Variant", variant);
-//                 variant.attribute_values.forEach((item,index)=>{
-//                 if (index>0){
-//                     let element = document.getElementById(item.value)
-//                     element.setAttribute("disabled",true)
-//                     if (element.hasAttribute("checked")){
-//                         element.removeAttribute("checked")
-//                     }
-//                 }
-//             })
-//           }
-//       })
-//   }
-})
