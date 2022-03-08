@@ -180,7 +180,7 @@ export const variants2 = [
     },
     {
       name: 'color: white | length: 3m | finish: nylon',
-      stock: 'active',
+      stock: 'inactive',
       attribute_values: [
         { kind: 'color', value: 'white' },
         { kind: 'length', value: '3m' },

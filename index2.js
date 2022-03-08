@@ -2,6 +2,7 @@ import * as sampleInput from "./inputs.js"
 
 const treeForm = document.getElementById("variantForm")
 const result = document.getElementById("result")
+let levels = treeForm.childElementCount
 
 let modifiedVariants = []
 sampleInput.variants2.map(combination =>{
@@ -12,25 +13,22 @@ sampleInput.variants2.map(combination =>{
 }
 )
 
-// console.log("modifiedVariants",modifiedVariants);
+console.log("modifiedVariants",modifiedVariants);
 
 let invalidCombiSearchFn = (inputArray,searchKey) => {
-  console.log("searchKey",searchKey);
   let unavailableCombinations = []
   inputArray.map((input)=> {
     if(input.find(item => item === searchKey)){
       unavailableCombinations.push(input)
     }
   })
-  
   return unavailableCombinations
 }
 
+
 treeForm.addEventListener('change', (event) => {
 
-  let inputs = treeForm.querySelectorAll('input')
-
-  inputs = [...inputs]
+  let inputs = [...treeForm.querySelectorAll('input')]
 
   let selectedInputs = []
   inputs.map((input) => {
@@ -47,12 +45,17 @@ treeForm.addEventListener('change', (event) => {
   let checkCombiUnavailable = invalidCombiSearchFn(modifiedVariants,modifiedInputs[0])
 
   console.log("UNAVAILABLE",checkCombiUnavailable);
-
+  let filterFn = () => {
+    let helper = checkCombiUnavailable.filter(combi=>{
+      return combi.includes('6m')
+    })
+    console.log(helper.length);
+  }
+filterFn()
   let test = ()=>{
     let foo = []
     checkCombiUnavailable.map((item)=> {
-    console.log("ITEM",item);
-    if (item.includes(modifiedInputs[1])){
+    if (item.includes(modifiedInputs[levels-2])){
       foo.push(item)
       return foo
     }
